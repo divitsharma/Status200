@@ -1073,7 +1073,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 331905821}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -3.02, z: -0.81}
+  m_LocalPosition: {x: 0, y: -1.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1834829006}
@@ -1631,7 +1631,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5908565583159864625, guid: 7917b1980eeef63439adec2c45de23e3, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5908565583159864625, guid: 7917b1980eeef63439adec2c45de23e3, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2796,7 +2796,7 @@ Transform:
   - {fileID: 92659830}
   - {fileID: 1557632682}
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!43 &1531794958
 Mesh:
@@ -3186,7 +3186,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1563129419
 MonoBehaviour:
@@ -3438,7 +3438,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5908565583159864625, guid: 7917b1980eeef63439adec2c45de23e3, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5908565583159864625, guid: 7917b1980eeef63439adec2c45de23e3, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -4579,14 +4579,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 6960760470552771073, guid: 8d266fec79c7f8f48951a1ad8a9f04fc, type: 3}
-      propertyPath: m_Size.z
-      value: 8.885471
-      objectReference: {fileID: 0}
-    - target: {fileID: 6960760470552771073, guid: 8d266fec79c7f8f48951a1ad8a9f04fc, type: 3}
-      propertyPath: m_Center.z
-      value: -3.9427395
-      objectReference: {fileID: 0}
     - target: {fileID: 7762653208556992251, guid: 8d266fec79c7f8f48951a1ad8a9f04fc, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

@@ -91,6 +91,11 @@ public class PlayerInput : MonoBehaviour
                 Turn(intersectingRouter.leftSocket);
                 state = State.Default;
             }
+            else if (Input.GetKeyDown(KeyCode.D))
+            {
+                Turn(intersectingRouter.rightSocket);
+                state = State.Default;
+            }
         }
 
         controller.Move(deltaMove * Time.deltaTime);
