@@ -25,6 +25,8 @@ public class PlayerInput : MonoBehaviour
     Router intersectingRouter;
     public Transform railOrigin;
 
+    ScoreManager scoreManager;
+
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log("trigger");
@@ -44,7 +46,7 @@ public class PlayerInput : MonoBehaviour
         state = State.Default;
         //railOrigin.position = transform.position;
         //railOrigin.rotation = transform.rotation;
-
+        scoreManager = FindObjectOfType<ScoreManager>();
     }
 
     // Update is called once per frame
@@ -112,6 +114,14 @@ public class PlayerInput : MonoBehaviour
                     {
                         success = Turn(intersectingRouter, intersectingRouter.rightSocket, TurnDirection.Right);
                         state = State.Turning;
+                    }
+
+                    if (success)
+                    {
+                    }
+                    else
+                    {
+
                     }
                 }
                 break;

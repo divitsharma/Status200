@@ -17,7 +17,7 @@ public class Router : MonoBehaviour
     public Transform rightSocket;
 
     public TurnDirection CorrectTurn;
-    // Start is called before the first frame update
+    
     void Start()
     {
         //int r = Random.Range(0, 1);
