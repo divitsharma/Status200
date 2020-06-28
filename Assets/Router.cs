@@ -2,6 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum Turn
+{
+    Left,
+    Right,
+    Straight,
+    Up,
+    Down
+}
+
 public class Router : MonoBehaviour
 {
     public Transform leftSocket;
