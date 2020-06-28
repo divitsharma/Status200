@@ -101,15 +101,16 @@ public class PlayerInput : MonoBehaviour
                 {
                     Vector3 toCenter = Vector3.Project(transform.position - railOrigin.position, railOrigin.right);
                     lateralMove = -toCenter;
+                    bool success = false;
 
                     if (Input.GetKeyDown(KeyCode.A))
                     {
-                        Turn(intersectingRouter.leftSocket);
+                        success = Turn(intersectingRouter, intersectingRouter.leftSocket, TurnDirection.Left);
                         state = State.Turning;
                     }
                     else if (Input.GetKeyDown(KeyCode.D))
                     {
-                        Turn(intersectingRouter.rightSocket);
+                        success = Turn(intersectingRouter, intersectingRouter.rightSocket, TurnDirection.Right);
                         state = State.Turning;
                     }
                 }
@@ -123,7 +124,7 @@ public class PlayerInput : MonoBehaviour
 
     }
 
-    void Turn(Transform target)
+    bool Turn(Router router, Transform target, TurnDirection direction)
     {
         // determine sign
         targetAngle = Vector3.Dot(transform.right, target.forward) * 90f;
@@ -133,5 +134,7 @@ public class PlayerInput : MonoBehaviour
         //transform.rotation = target.rotation;
         railOrigin = target;
         controller.enabled = true;
+
+        return router.CorrectTurn == direction;
     }
 }
