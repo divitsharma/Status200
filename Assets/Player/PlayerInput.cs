@@ -6,7 +6,8 @@ public enum State
 {
     Default,
     Turning,
-    OnTrigger
+    OnTrigger,
+    TriggerExit
 }
 
 public class PlayerInput : MonoBehaviour
@@ -35,9 +36,10 @@ public class PlayerInput : MonoBehaviour
     }
     private void OnTriggerExit(Collider other)
     {
-        //Debug.Log("exited");
-        state = State.Default;
-        intersectingRouter = null;
+        Debug.Log("exited");
+        // if we've exited the trigger, we're going straight
+        state = State.TriggerExit;
+        //intersectingRouter = null;
     }
 
     void Start()
@@ -129,6 +131,21 @@ public class PlayerInput : MonoBehaviour
                         {
                             scoreManager.FailedTurn();
                         }
+                    }
+                }
+                break;
+            case State.TriggerExit:
+                {
+                    TurnDirection direction = TurnDirection.Straight;
+                    bool success = Turn(intersectingRouter, direction);
+                    state = State.Default;
+                    if (success)
+                    {
+                        scoreManager.PlayerScored();
+                    }
+                    else
+                    {
+                        scoreManager.FailedTurn();
                     }
                 }
                 break;

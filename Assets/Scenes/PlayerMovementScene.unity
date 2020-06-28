@@ -16125,7 +16125,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 15658734
+    rgba: 4293848814
   m_fontColor: {r: 0.9339623, g: 0.9339623, b: 0.9339623, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -16490,15 +16490,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1456028581330038547, guid: c00ce37e7da25ba4e988347be9dbc1a9, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.22861879
+      value: 0.2286188
       objectReference: {fileID: 0}
     - target: {fileID: 1456028581330038547, guid: c00ce37e7da25ba4e988347be9dbc1a9, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.000000018641911
+      value: 0.000000008099222
       objectReference: {fileID: 0}
     - target: {fileID: 1456028581330038547, guid: c00ce37e7da25ba4e988347be9dbc1a9, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.00000001100158
+      value: -0.00000001728142
       objectReference: {fileID: 0}
     - target: {fileID: 1456028581660696178, guid: c00ce37e7da25ba4e988347be9dbc1a9, type: 3}
       propertyPath: m_LocalPosition.x
@@ -16625,6 +16625,10 @@ PrefabInstance:
       propertyPath: railOrigin
       value: 
       objectReference: {fileID: 501631382}
+    - target: {fileID: 5879774777786176550, guid: 24467836ec156ef4ab6088481e0b572f, type: 3}
+      propertyPath: forwardSpeed
+      value: 20
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 24467836ec156ef4ab6088481e0b572f, type: 3}
 --- !u!1001 &7762653210549688855

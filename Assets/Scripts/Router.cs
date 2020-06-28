@@ -16,6 +16,7 @@ public class Router : MonoBehaviour
 {
     public Transform leftSocket;
     public Transform rightSocket;
+    public Transform straightSocket;
 
     public TurnDirection CorrectTurn;
     
@@ -36,6 +37,7 @@ public class Router : MonoBehaviour
                 ret = rightSocket;
                 break;
             case TurnDirection.Straight:
+                ret = straightSocket;
                 break;
             case TurnDirection.Up:
                 break;
