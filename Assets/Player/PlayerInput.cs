@@ -90,13 +90,13 @@ public class PlayerInput : MonoBehaviour
                 else
                 {
                     // rotate full amount
-                    Debug.Log(angle);
                     degreesTurned += angle;
                 }
                 transform.Rotate(Vector3.up, angle);
                 break;
 
             case State.OnTrigger:
+
                 if (Input.GetKeyDown(KeyCode.A))
                 {
                     Turn(intersectingRouter.leftSocket);
@@ -118,6 +118,9 @@ public class PlayerInput : MonoBehaviour
 
     void Turn(Transform target)
     {
+        // determine sign
+        Debug.Log(Vector3.Dot(transform.right, target.right));
+
         controller.enabled = false;
         transform.position = target.position;
         //transform.rotation = target.rotation;
