@@ -4,6 +4,7 @@ using UnityEngine;
 
 public enum TurnDirection
 {
+    None = -1,
     Left = 0,
     Right,
     Straight,
@@ -21,6 +22,29 @@ public class Router : MonoBehaviour
     void Start()
     {
         //int r = Random.Range(0, 1);
+    }
+
+    public Transform GetSocket(TurnDirection direction)
+    {
+        Transform ret = null;
+        switch (direction)
+        {
+            case TurnDirection.Left:
+                ret = leftSocket;
+                break;
+            case TurnDirection.Right:
+                ret = rightSocket;
+                break;
+            case TurnDirection.Straight:
+                break;
+            case TurnDirection.Up:
+                break;
+            case TurnDirection.Down:
+                break;
+            default:
+                break;
+        }
+        return ret;
     }
 
 }

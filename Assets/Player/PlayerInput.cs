@@ -29,13 +29,13 @@ public class PlayerInput : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("trigger");
+        //Debug.Log("trigger");
         state = State.OnTrigger;
         intersectingRouter = other.gameObject.GetComponent<Router>();
     }
     private void OnTriggerExit(Collider other)
     {
-        Debug.Log("exited");
+        //Debug.Log("exited");
         state = State.Default;
         intersectingRouter = null;
     }
@@ -101,27 +101,34 @@ public class PlayerInput : MonoBehaviour
 
             case State.OnTrigger:
                 {
+                    // keep moving towards center
                     Vector3 toCenter = Vector3.Project(transform.position - railOrigin.position, railOrigin.right);
                     lateralMove = -toCenter;
-                    bool success = false;
+
+                    TurnDirection direction = TurnDirection.None;
 
                     if (Input.GetKeyDown(KeyCode.A))
                     {
-                        success = Turn(intersectingRouter, intersectingRouter.leftSocket, TurnDirection.Left);
-                        state = State.Turning;
+                        direction = TurnDirection.Left;
                     }
                     else if (Input.GetKeyDown(KeyCode.D))
                     {
-                        success = Turn(intersectingRouter, intersectingRouter.rightSocket, TurnDirection.Right);
+                        direction = TurnDirection.Right;
+                    }
+
+                    if (direction != TurnDirection.None)
+                    {
+                        bool success = Turn(intersectingRouter, direction);
                         state = State.Turning;
-                    }
-
-                    if (success)
-                    {
-                    }
-                    else
-                    {
-
+                        
+                        if (success)
+                        {
+                            scoreManager.PlayerScored();
+                        }
+                        else
+                        {
+                            scoreManager.FailedTurn();
+                        }
                     }
                 }
                 break;
@@ -134,8 +141,10 @@ public class PlayerInput : MonoBehaviour
 
     }
 
-    bool Turn(Router router, Transform target, TurnDirection direction)
+    bool Turn(Router router, TurnDirection direction)
     {
+        Transform target = router.GetSocket(direction);
+
         // determine sign
         targetAngle = Vector3.Dot(transform.right, target.forward) * 90f;
 
