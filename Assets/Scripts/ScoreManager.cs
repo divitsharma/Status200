@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class ScoreManager : MonoBehaviour
 {
+    public static ScoreManager inst;
+    
     public event Action ScoreEvent;
     public event Action GameOverEvent;
 
@@ -13,9 +15,9 @@ public class ScoreManager : MonoBehaviour
     bool gameOver = false;
     public bool GameOver { get => gameOver; }
     float GOTime;
+    public bool newHigh = false;
 
-    public static ScoreManager inst;
-
+    public LeaderboardData leaderboard;
 
     // Start is called before the first frame update
     void Start()
@@ -34,6 +36,11 @@ public class ScoreManager : MonoBehaviour
         if (!GameOver)
         {
             score += Time.deltaTime;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            FailedTurn();
         }
     }
     void FixedUpdate()
@@ -59,5 +66,10 @@ public class ScoreManager : MonoBehaviour
     {
         gameOver = true;
         GOTime = Time.timeSinceLevelLoad;
+        if (leaderboard.best < score)
+        {
+            leaderboard.best = score;
+            newHigh = true;
+        }
     }
 }

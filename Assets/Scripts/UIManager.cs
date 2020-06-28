@@ -30,7 +30,15 @@ public class UIManager : MonoBehaviour
     {
         GOPanel.SetActive(true);
         TMP_Text scorelabel = GOPanel.transform.GetComponentsInChildren<TMP_Text>()[1];
-        scorelabel.text = "> Score: " + ScoreManager.inst.Score.ToString("#0.00");
+        if (ScoreManager.inst.newHigh)
+        {
+            scorelabel.text = "> NEW HIGH SCORE: " + ScoreManager.inst.Score.ToString("#0.00");
+            scorelabel.color = Color.green;
+        }
+        else
+        {
+            scorelabel.text = "> Score: " + ScoreManager.inst.Score.ToString("#0.00");
+        }
         runningScoreLabel.gameObject.SetActive(false);
     }
 
@@ -38,5 +46,10 @@ public class UIManager : MonoBehaviour
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+    public void MainMenu()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(0);
     }
 }
