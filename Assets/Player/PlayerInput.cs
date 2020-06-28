@@ -51,30 +51,30 @@ public class PlayerInput : MonoBehaviour
     void Update()
     {
         Vector3 deltaMove = transform.forward * forwardSpeed;
+        Vector3 lateralMove = Vector3.zero;
 
         switch (state)
         {
             case State.Default:
-                float horizontal = Input.GetAxisRaw("Horizontal");
-                //float vertical = Input.GetAxisRaw("Vertical");
+                {
+                    float horizontal = Input.GetAxisRaw("Horizontal");
+                    //float vertical = Input.GetAxisRaw("Vertical");
 
-                Vector3 lateralMove = Vector3.zero;
-                Vector3 toCenter = Vector3.Project(transform.position - railOrigin.position, railOrigin.right);
-                // go back to origin if not holding down any keys
-                if (horizontal == 0f)
-                {
-                    lateralMove = -toCenter;// new Vector3(-transform.localPosition.x, 0.0f, 0.0f);
-                }
-                else
-                {
-                    // clamp position
-                    if (toCenter.magnitude < lateralRange)
+                    Vector3 toCenter = Vector3.Project(transform.position - railOrigin.position, railOrigin.right);
+                    // go back to origin if not holding down any keys
+                    if (horizontal == 0f)
                     {
-                        lateralMove = transform.right * horizontal;
+                        lateralMove = -toCenter;// new Vector3(-transform.localPosition.x, 0.0f, 0.0f);
+                    }
+                    else
+                    {
+                        // clamp position
+                        if (toCenter.magnitude < lateralRange)
+                        {
+                            lateralMove = transform.right * horizontal;
+                        }
                     }
                 }
-
-                deltaMove += lateralMove * lateralSpeed;
                 break;
 
             case State.Turning:
@@ -98,22 +98,27 @@ public class PlayerInput : MonoBehaviour
                 break;
 
             case State.OnTrigger:
+                {
+                    Vector3 toCenter = Vector3.Project(transform.position - railOrigin.position, railOrigin.right);
+                    lateralMove = -toCenter;
 
-                if (Input.GetKeyDown(KeyCode.A))
-                {
-                    Turn(intersectingRouter.leftSocket);
-                    state = State.Turning;
-                }
-                else if (Input.GetKeyDown(KeyCode.D))
-                {
-                    Turn(intersectingRouter.rightSocket);
-                    state = State.Turning;
+                    if (Input.GetKeyDown(KeyCode.A))
+                    {
+                        Turn(intersectingRouter.leftSocket);
+                        state = State.Turning;
+                    }
+                    else if (Input.GetKeyDown(KeyCode.D))
+                    {
+                        Turn(intersectingRouter.rightSocket);
+                        state = State.Turning;
+                    }
                 }
                 break;
             default:
                 break;
         }
 
+        deltaMove += lateralMove * lateralSpeed;
         controller.Move(deltaMove * Time.deltaTime);
 
     }
