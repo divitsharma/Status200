@@ -27,6 +27,7 @@ public class PlayerInput : MonoBehaviour
     public Transform railOrigin;
 
     ScoreManager scoreManager;
+    float elapsedTime = 0f;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -54,6 +55,10 @@ public class PlayerInput : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        elapsedTime += Time.deltaTime;
+        forwardSpeed += elapsedTime * 0.005f;
+
+
         Vector3 deltaMove = transform.forward * forwardSpeed;
         Vector3 lateralMove = Vector3.zero;
 

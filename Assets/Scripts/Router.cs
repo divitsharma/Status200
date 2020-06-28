@@ -6,8 +6,8 @@ public enum TurnDirection
 {
     None = -1,
     Left = 0,
-    Right,
-    Straight,
+    Right = 1,
+    Straight = 2,
 }
 
 public class Router : MonoBehaviour
@@ -23,7 +23,7 @@ public class Router : MonoBehaviour
     
     void Start()
     {
-        int r = Random.Range(0, 1);
+        int r = Random.Range(0, 3);
         CorrectTurn = (TurnDirection)r;
         pipes[r].GetComponent<MeshRenderer>().material = correctColor;
     }
