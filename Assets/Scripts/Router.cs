@@ -8,8 +8,6 @@ public enum TurnDirection
     Left = 0,
     Right,
     Straight,
-    Up,
-    Down
 }
 
 public class Router : MonoBehaviour
@@ -18,11 +16,16 @@ public class Router : MonoBehaviour
     public Transform rightSocket;
     public Transform straightSocket;
 
+    public Transform[] pipes = new Transform[3];
+    public Material correctColor;
+
     public TurnDirection CorrectTurn;
     
     void Start()
     {
-        //int r = Random.Range(0, 1);
+        int r = Random.Range(0, 1);
+        CorrectTurn = (TurnDirection)r;
+        pipes[r].GetComponent<MeshRenderer>().material = correctColor;
     }
 
     public Transform GetSocket(TurnDirection direction)
@@ -38,10 +41,6 @@ public class Router : MonoBehaviour
                 break;
             case TurnDirection.Straight:
                 ret = straightSocket;
-                break;
-            case TurnDirection.Up:
-                break;
-            case TurnDirection.Down:
                 break;
             default:
                 break;

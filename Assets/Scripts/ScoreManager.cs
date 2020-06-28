@@ -18,12 +18,14 @@ public class ScoreManager : MonoBehaviour
     public bool newHigh = false;
 
     public LeaderboardData leaderboard;
+    AudioSource audioSource;
 
     // Start is called before the first frame update
     void Start()
     {
         GameOverEvent += OnGameOver;
         inst = this;
+        audioSource = GetComponent<AudioSource>();
     }
 
     void OnDestroy()
@@ -54,6 +56,7 @@ public class ScoreManager : MonoBehaviour
     public void PlayerScored()
     {
         Debug.Log("scored!");
+        audioSource.Play();
     }
 
     public void FailedTurn()
