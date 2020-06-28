@@ -17,8 +17,9 @@ public class PlayerInput : MonoBehaviour
 
     CharacterController controller;
 
-    [SerializeField] float degreesPerSecond = 180f;
+    [SerializeField] int turnsPerSecond = 2;
     float degreesTurned = 0.0f;
+    float targetAngle;
 
     State state;
     Router intersectingRouter;
@@ -77,13 +78,14 @@ public class PlayerInput : MonoBehaviour
                 break;
 
             case State.Turning:
+                // move according to target forward
                 deltaMove = railOrigin.forward * forwardSpeed;
 
-                float angle = degreesPerSecond * Time.deltaTime;
-                if (degreesTurned + angle >= 90f)
+                float angle = turnsPerSecond * targetAngle * Time.deltaTime;
+                if (Mathf.Abs(degreesTurned + angle) >= 90f)
                 {
                     // rotate the leftover amount and exit
-                    angle = 90f - degreesTurned;
+                    angle = targetAngle - degreesTurned;
                     degreesTurned = 0f;
                     state = State.Default;
                 }
@@ -119,7 +121,7 @@ public class PlayerInput : MonoBehaviour
     void Turn(Transform target)
     {
         // determine sign
-        Debug.Log(Vector3.Dot(transform.right, target.right));
+        targetAngle = Vector3.Dot(transform.right, target.forward) * 90f;
 
         controller.enabled = false;
         transform.position = target.position;
