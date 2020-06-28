@@ -17,8 +17,8 @@ public class PlayerInput : MonoBehaviour
 
     CharacterController controller;
 
-    [SerializeField] float turnOverSeconds = 1f;
-    float timeTurning = 0.0f;
+    [SerializeField] float degreesPerSecond = 180f;
+    float degreesTurned = 0.0f;
 
     State state;
     Router intersectingRouter;
@@ -50,52 +50,66 @@ public class PlayerInput : MonoBehaviour
     void Update()
     {
         Vector3 deltaMove = transform.forward * forwardSpeed;
-        if (state == State.Turning)
-        {
-            timeTurning += Time.deltaTime;
-            //float angle = Mathf.LerpAngle(0f, 90f, timeTurning / turnOverSeconds);
-            //Debug.Log(angle);
-            transform.Rotate(Vector3.up, 0.1f);
-            if (timeTurning >= turnOverSeconds)
-            {
-                timeTurning = 0f;
-            }
-        }
-        else if (state == State.Default)
-        {
-            float horizontal = Input.GetAxisRaw("Horizontal");
-            //float vertical = Input.GetAxisRaw("Vertical");
 
-            Vector3 lateralMove = Vector3.zero;
-            Vector3 toCenter = Vector3.Project(transform.position - railOrigin.position, railOrigin.right);
-            // go back to origin if not holding down any keys
-            if (horizontal == 0f)
-            {
-                lateralMove = -toCenter;// new Vector3(-transform.localPosition.x, 0.0f, 0.0f);
-            }
-            else
-            {
-                // clamp position
-                if (toCenter.magnitude < lateralRange)
+        switch (state)
+        {
+            case State.Default:
+                float horizontal = Input.GetAxisRaw("Horizontal");
+                //float vertical = Input.GetAxisRaw("Vertical");
+
+                Vector3 lateralMove = Vector3.zero;
+                Vector3 toCenter = Vector3.Project(transform.position - railOrigin.position, railOrigin.right);
+                // go back to origin if not holding down any keys
+                if (horizontal == 0f)
                 {
-                    lateralMove = transform.right * horizontal;
+                    lateralMove = -toCenter;// new Vector3(-transform.localPosition.x, 0.0f, 0.0f);
                 }
-            }
+                else
+                {
+                    // clamp position
+                    if (toCenter.magnitude < lateralRange)
+                    {
+                        lateralMove = transform.right * horizontal;
+                    }
+                }
 
-            deltaMove += lateralMove * lateralSpeed;
-        }
-        else if (state == State.OnTrigger)
-        {
-            if (Input.GetKeyDown(KeyCode.A))
-            {
-                Turn(intersectingRouter.leftSocket);
-                state = State.Default;
-            }
-            else if (Input.GetKeyDown(KeyCode.D))
-            {
-                Turn(intersectingRouter.rightSocket);
-                state = State.Default;
-            }
+                deltaMove += lateralMove * lateralSpeed;
+                break;
+
+            case State.Turning:
+                deltaMove = railOrigin.forward * forwardSpeed;
+
+                float angle = degreesPerSecond * Time.deltaTime;
+                if (degreesTurned + angle >= 90f)
+                {
+                    // rotate the leftover amount and exit
+                    angle = 90f - degreesTurned;
+                    degreesTurned = 0f;
+                    state = State.Default;
+                }
+                else
+                {
+                    // rotate full amount
+                    Debug.Log(angle);
+                    degreesTurned += angle;
+                }
+                transform.Rotate(Vector3.up, angle);
+                break;
+
+            case State.OnTrigger:
+                if (Input.GetKeyDown(KeyCode.A))
+                {
+                    Turn(intersectingRouter.leftSocket);
+                    state = State.Turning;
+                }
+                else if (Input.GetKeyDown(KeyCode.D))
+                {
+                    Turn(intersectingRouter.rightSocket);
+                    state = State.Turning;
+                }
+                break;
+            default:
+                break;
         }
 
         controller.Move(deltaMove * Time.deltaTime);
@@ -106,7 +120,7 @@ public class PlayerInput : MonoBehaviour
     {
         controller.enabled = false;
         transform.position = target.position;
-        transform.rotation = target.rotation;
+        //transform.rotation = target.rotation;
         railOrigin = target;
         controller.enabled = true;
     }
