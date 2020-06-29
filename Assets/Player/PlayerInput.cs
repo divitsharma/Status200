@@ -7,7 +7,8 @@ public enum State
     Default,
     Turning,
     OnTrigger,
-    TriggerExit
+    TriggerExit,
+    GameOver
 }
 
 public class PlayerInput : MonoBehaviour
@@ -26,18 +27,20 @@ public class PlayerInput : MonoBehaviour
     Router intersectingRouter;
     public Transform railOrigin;
 
-    ScoreManager scoreManager;
     float elapsedTime = 0f;
 
     private void OnTriggerEnter(Collider other)
     {
+        if (ScoreManager.inst.GameOver) return;
+
         //Debug.Log("trigger");
         state = State.OnTrigger;
         intersectingRouter = other.gameObject.GetComponent<Router>();
     }
     private void OnTriggerExit(Collider other)
     {
-        Debug.Log("exited");
+        if (ScoreManager.inst.GameOver) return;
+        //Debug.Log("exited");
         // if we've exited the trigger, we're going straight
         state = State.TriggerExit;
         //intersectingRouter = null;
@@ -47,17 +50,24 @@ public class PlayerInput : MonoBehaviour
     {
         controller = GetComponent<CharacterController>();
         state = State.Default;
+        //ScoreManager.inst.GameOverEvent += OnGameOver;
         //railOrigin.position = transform.position;
         //railOrigin.rotation = transform.rotation;
-        scoreManager = FindObjectOfType<ScoreManager>();
+    }
+
+    private void OnDestroy()
+    {
+        //ScoreManager.inst.GameOverEvent -= OnGameOver;
     }
 
     // Update is called once per frame
     void Update()
     {
         elapsedTime += Time.deltaTime;
-        forwardSpeed += elapsedTime * 0.005f;
-
+        if (!ScoreManager.inst.GameOver)
+        {
+            forwardSpeed += elapsedTime * 0.005f;
+        }
 
         Vector3 deltaMove = transform.forward * forwardSpeed;
         Vector3 lateralMove = Vector3.zero;
@@ -67,7 +77,6 @@ public class PlayerInput : MonoBehaviour
             case State.Default:
                 {
                     float horizontal = Input.GetAxisRaw("Horizontal");
-                    //float vertical = Input.GetAxisRaw("Vertical");
 
                     Vector3 toCenter = Vector3.Project(transform.position - railOrigin.position, railOrigin.right);
                     // go back to origin if not holding down any keys
@@ -96,7 +105,15 @@ public class PlayerInput : MonoBehaviour
                     // rotate the leftover amount and exit
                     angle = targetAngle - degreesTurned;
                     degreesTurned = 0f;
-                    state = State.Default;
+
+                    if (ScoreManager.inst.GameOver)
+                    {
+                        state = State.GameOver;
+                    }
+                    else
+                    {
+                        state = State.Default;
+                    }
                 }
                 else
                 {
@@ -130,11 +147,11 @@ public class PlayerInput : MonoBehaviour
                         
                         if (success)
                         {
-                            scoreManager.PlayerScored();
+                            ScoreManager.inst.PlayerScored();
                         }
                         else
                         {
-                            scoreManager.FailedTurn();
+                            ScoreManager.inst.FailedTurn();
                         }
                     }
                 }
@@ -146,12 +163,17 @@ public class PlayerInput : MonoBehaviour
                     state = State.Default;
                     if (success)
                     {
-                        scoreManager.PlayerScored();
+                        ScoreManager.inst.PlayerScored();
                     }
                     else
                     {
-                        scoreManager.FailedTurn();
+                        ScoreManager.inst.FailedTurn();
                     }
+                }
+                break;
+            case State.GameOver:
+                {
+
                 }
                 break;
             default:
@@ -177,5 +199,10 @@ public class PlayerInput : MonoBehaviour
         controller.enabled = true;
 
         return router.CorrectTurn == direction;
+    }
+
+    void OnGameOver()
+    {
+        state = State.GameOver;
     }
 }

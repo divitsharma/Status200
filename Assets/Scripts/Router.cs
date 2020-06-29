@@ -23,7 +23,7 @@ public class Router : MonoBehaviour
     
     void Start()
     {
-        int r = Random.Range(0, 3);
+        int r = Random.Range(0, 2);
         CorrectTurn = (TurnDirection)r;
         pipes[r].GetComponent<MeshRenderer>().material = correctColor;
     }

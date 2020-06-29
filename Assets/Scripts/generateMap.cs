@@ -141,11 +141,11 @@ public class generateMap : MonoBehaviour
         Transform rightSocket = rRouter.rightSocket;
         Transform topSocket = rRouter.straightSocket;
 
-        NullVector topPos = new NullVector(translateInDirection(curRouterPos, curRotation, pipeLength, 0), true);
-        NullVector leftPos = new NullVector(translateInDirection(curRouterPos, curRotation, pipeLength, 1), true);
-        NullVector rightPos = new NullVector(translateInDirection(curRouterPos, curRotation, pipeLength, 2), true);
+        NullVector topPos = new NullVector(translateInDirection(curRouterPos, curRotation, pipeLength + socketOffset, 0), true);
+        NullVector leftPos = new NullVector(translateInDirection(curRouterPos, curRotation, pipeLength + socketOffset, 1), true);
+        NullVector rightPos = new NullVector(translateInDirection(curRouterPos, curRotation, pipeLength + socketOffset, 2), true);
 
-        List<NullVector> points = new List<NullVector> {rightPos, leftPos, topPos};
+        List<NullVector> points = new List<NullVector> { rightPos, leftPos };//, topPos};
 
         for (int i = 0; i < points.Count; i++) 
         {
@@ -221,13 +221,13 @@ public class generateMap : MonoBehaviour
 
         
         int routerCount = routers.Count;
-        Debug.Log("Router Count" + routerCount);
+        //Debug.Log("Router Count" + routerCount);
         
         // Generate adjacent routers if they don't exist
         GameObject curRouter = findAndEnq(routers, true);
 
         // Ignore value
-        GameObject nearestPipe = findAndEnq(pipes, false);
+        _ = findAndEnq(pipes, false);
 
         renderObjs(routers, curRouter, true);
         if (renderPipe) {
